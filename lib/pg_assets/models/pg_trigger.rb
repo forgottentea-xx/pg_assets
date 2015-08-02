@@ -1,5 +1,5 @@
 class PGTrigger < ActiveRecord::Base
-  attr_accessor :cached_defn, :trigger_table_name
+  attr_accessor :trigger_table_name
 
   self.table_name = 'pg_catalog.pg_trigger'
 
@@ -7,10 +7,8 @@ class PGTrigger < ActiveRecord::Base
     self.cached_defn = get_trigger_defn
   end
 
-  def self.readonly?
-    true
-  end
-
+  # this is wrong.  this should join on pg_class to get the table, and then
+  # pg_schema to get the schema, and then exclude those other schemas
   scope :ours, -> { where(tgisinternal: false) }
 
   def identity
@@ -19,10 +17,6 @@ class PGTrigger < ActiveRecord::Base
 
   def sql_for_remove
     sql = "DROP TRIGGER IF EXISTS #{tgname} ON #{get_trigger_table_name}"
-  end
-
-  def remove
-    connection.execute sql_for_remove
   end
 
   def sql_for_reinstall
