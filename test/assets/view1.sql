@@ -1,0 +1,2 @@
+CREATE OR REPLACE VIEW simple_view AS
+  SELECT 1;
