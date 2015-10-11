@@ -1,4 +1,8 @@
-class PGView < Asset
+class PGView < ActiveRecord::Base
+  include LoadableAsset
+
+  attr_accessor :cached_defn
+
   self.table_name = 'pg_catalog.pg_views'
 
   after_find do

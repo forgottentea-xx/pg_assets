@@ -1,14 +1,15 @@
-class PGFunction < Asset
+class PGFunction < ActiveRecord::Base
+  include LoadableAsset
+
   self.table_name = 'pg_catalog.pg_proc'
 
-  after_find do
-    self.cached_defn = get_function_defn
-  end
+  columns = ['oid', 'proname', 'pronamespace']
 
   scope :ours, -> {
     joins('JOIN pg_catalog.pg_namespace ON (pg_proc.pronamespace = pg_namespace.oid)').
     where('pg_namespace.nspname NOT IN (?)', ['pg_catalog', 'information_schema'])
   }
+  default_scope { select(columns) }
 
   def identity
     proname
@@ -27,8 +28,7 @@ class PGFunction < Asset
 
   def get_oid
     sql = "SELECT oid FROM pg_catalog.pg_proc WHERE proname = '#{proname}' AND pronamespace = '#{pronamespace}'"
-    res = connection.execute sql
-    res.first['oid']
+    get_attribute_from_sql sql, :oid
   end
 
   def get_function_defn

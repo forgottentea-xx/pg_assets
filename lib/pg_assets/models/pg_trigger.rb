@@ -1,11 +1,9 @@
 class PGTrigger < ActiveRecord::Base
+  include LoadableAsset
+
   attr_accessor :trigger_table_name
 
   self.table_name = 'pg_catalog.pg_trigger'
-
-  after_find do
-    self.cached_defn = get_trigger_defn
-  end
 
   # this is wrong.  this should join on pg_class to get the table, and then
   # pg_schema to get the schema, and then exclude those other schemas
@@ -20,7 +18,7 @@ class PGTrigger < ActiveRecord::Base
   end
 
   def sql_for_reinstall
-    sql = cached_defn
+    sql = get_trigger_defn
   end
 
   private
@@ -35,14 +33,12 @@ class PGTrigger < ActiveRecord::Base
 
   def get_oid
     sql = "SELECT oid FROM pg_catalog.pg_trigger WHERE tgrelid = #{tgrelid} AND tgname = '#{tgname}'"
-    res = connection.execute sql
-    res.first['oid']
+    get_attribute_from_sql sql, :oid
   end
 
   def get_trigger_defn
     sql = "SELECT pg_get_triggerdef(#{get_oid}, true) AS triggerdef"
-    res = connection.execute sql
-    res.first['triggerdef']
+    get_attribute_from_sql sql, :triggerdef
   end
 
 end

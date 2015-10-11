@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.name        = "pg_assets"
   s.version     = PgAssets::VERSION
   s.authors     = ["Jeff Osborn"]
-  s.email       = ["jeff.osborn@cohealo.com"]
+  s.email       = ["jeff@isatowel.net"]
   s.summary     = "Managing your database assets right right way."
   s.description = "Mostly seamless management of functions, triggers, views, and materialized views, similar to schema.rb/structure.sql"
 
