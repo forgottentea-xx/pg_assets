@@ -1,44 +1,45 @@
-class PGTrigger < ActiveRecord::Base
-  include LoadableAsset
+module PGAssets
+  class PGTrigger < ActiveRecord::Base
+    include LoadableAsset
 
-  attr_accessor :trigger_table_name
+    attr_accessor :trigger_table_name
 
-  self.table_name = 'pg_catalog.pg_trigger'
+    self.table_name = 'pg_catalog.pg_trigger'
 
-  # this is wrong.  this should join on pg_class to get the table, and then
-  # pg_schema to get the schema, and then exclude those other schemas
-  scope :ours, -> { where(tgisinternal: false) }
+    # this is wrong.  this should join on pg_class to get the table, and then
+    # pg_schema to get the schema, and then exclude those other schemas
+    scope :ours, -> { where(tgisinternal: false) }
 
-  def identity
-    "#{tgname} ON #{get_trigger_table_name}"
+    def identity
+      "#{tgname} ON #{get_trigger_table_name}"
+    end
+
+    def sql_for_remove
+      sql = "DROP TRIGGER IF EXISTS #{tgname} ON #{get_trigger_table_name}"
+    end
+
+    def sql_for_reinstall
+      sql = get_trigger_defn
+    end
+
+    private
+
+    def get_trigger_table_name
+      sql = "
+        SELECT relname AS name FROM pg_class WHERE oid = #{tgrelid}
+      "
+      res = connection.execute sql
+      res.first['name']
+    end
+
+    def get_oid
+      sql = "SELECT oid FROM pg_catalog.pg_trigger WHERE tgrelid = #{tgrelid} AND tgname = '#{tgname}'"
+      get_attribute_from_sql sql, :oid
+    end
+
+    def get_trigger_defn
+      sql = "SELECT pg_get_triggerdef(#{get_oid}, true) AS triggerdef"
+      get_attribute_from_sql sql, :triggerdef
+    end
   end
-
-  def sql_for_remove
-    sql = "DROP TRIGGER IF EXISTS #{tgname} ON #{get_trigger_table_name}"
-  end
-
-  def sql_for_reinstall
-    sql = get_trigger_defn
-  end
-
-  private
-
-  def get_trigger_table_name
-    sql = "
-      SELECT relname AS name FROM pg_class WHERE oid = #{tgrelid}
-    "
-    res = connection.execute sql
-    res.first['name']
-  end
-
-  def get_oid
-    sql = "SELECT oid FROM pg_catalog.pg_trigger WHERE tgrelid = #{tgrelid} AND tgname = '#{tgname}'"
-    get_attribute_from_sql sql, :oid
-  end
-
-  def get_trigger_defn
-    sql = "SELECT pg_get_triggerdef(#{get_oid}, true) AS triggerdef"
-    get_attribute_from_sql sql, :triggerdef
-  end
-
 end

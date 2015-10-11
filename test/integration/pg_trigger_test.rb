@@ -1,11 +1,11 @@
 require 'test_helper'
 
-describe PGTrigger do
-  describe ".function" do
+describe PGAssets::PGTrigger do
+  describe ".ours" do
     it "lists the functions" do
-      PGTrigger.ours.count.must_equal 0
+      PGAssets::PGTrigger.ours.count.must_equal 0
       load_asset :trigger1
-      PGTrigger.ours.count.must_equal 1
+      PGAssets::PGTrigger.ours.count.must_equal 1
     end
   end
 end
