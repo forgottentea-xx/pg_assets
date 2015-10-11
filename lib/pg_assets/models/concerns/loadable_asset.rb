@@ -13,8 +13,8 @@ module PGAssets
         ActiveRecord::Base.connection.execute sql_for_remove
       end
 
-      def reinstall
-        ActiveRecord::Base.connection.execute sql_for_reinstall
+      def reinstall(defn=sql_for_reinstall)
+        ActiveRecord::Base.connection.execute defn
       end
 
       private
