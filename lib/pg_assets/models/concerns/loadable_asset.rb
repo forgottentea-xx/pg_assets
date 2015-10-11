@@ -3,6 +3,8 @@ module PGAssets
     extend ActiveSupport::Concern
 
     included do
+      attr_accessor :cached_defn
+
       def self.readonly?
         true
       end

@@ -2,8 +2,6 @@ module PGAssets
   class PGView < ActiveRecord::Base
     include LoadableAsset
 
-    attr_accessor :cached_defn
-
     self.table_name = 'pg_catalog.pg_views'
 
     after_find do
@@ -20,7 +18,7 @@ module PGAssets
       schemaname + '.' + viewname
     end
 
-    def remove_sql
+    def sql_for_remove
       sql = "DROP VIEW IF EXISTS #{schemaname}.#{viewname}"
     end
 

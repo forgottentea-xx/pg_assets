@@ -4,13 +4,14 @@ module PGAssets
 
     self.table_name = 'pg_catalog.pg_proc'
 
-    columns = ['oid', 'proname', 'pronamespace']
+    after_find do
+      self.cached_defn = get_function_defn
+    end
 
     scope :ours, -> {
       joins('JOIN pg_catalog.pg_namespace ON (pg_proc.pronamespace = pg_namespace.oid)').
       where('pg_namespace.nspname NOT IN (?)', ['pg_catalog', 'information_schema'])
     }
-    default_scope { select(columns) }
 
     def identity
       proname

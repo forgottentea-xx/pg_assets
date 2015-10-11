@@ -6,6 +6,10 @@ module PGAssets
 
     self.table_name = 'pg_catalog.pg_trigger'
 
+    after_find do
+      self.cached_defn = get_trigger_defn
+    end
+
     # this is wrong.  this should join on pg_class to get the table, and then
     # pg_schema to get the schema, and then exclude those other schemas
     scope :ours, -> { where(tgisinternal: false) }
@@ -19,17 +23,14 @@ module PGAssets
     end
 
     def sql_for_reinstall
-      sql = get_trigger_defn
+      sql = cached_defn
     end
 
     private
 
     def get_trigger_table_name
-      sql = "
-        SELECT relname AS name FROM pg_class WHERE oid = #{tgrelid}
-      "
-      res = connection.execute sql
-      res.first['name']
+      sql = "SELECT relname AS name FROM pg_class WHERE oid = #{tgrelid}"
+      get_attribute_from_sql sql, :name
     end
 
     def get_oid
