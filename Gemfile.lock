@@ -34,6 +34,7 @@ GEM
       tzinfo (~> 0.3.37)
     arel (4.0.2)
     builder (3.1.4)
+    database_cleaner (1.4.1)
     erubis (2.7.0)
     i18n (0.7.0)
     mail (2.6.3)
@@ -73,6 +74,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  database_cleaner
   minitest
   pg
   pg_assets!

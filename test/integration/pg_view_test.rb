@@ -1,5 +1,4 @@
 require 'test_helper'
-include ClearAssets
 
 describe PGView do
   describe ".views" do
