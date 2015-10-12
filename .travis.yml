@@ -22,6 +22,7 @@ before_install:
   - psql --version
   - sudo /etc/init.d/postgresql stop
   - sudo /etc/init.d/postgresql restart
+  - psql --version
 
 before_script:
   - psql -c 'create database pg_asset_reader_test;' -U postgres
