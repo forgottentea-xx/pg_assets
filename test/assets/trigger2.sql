@@ -4,7 +4,7 @@ CREATE TABLE test2 (
 
 CREATE OR REPLACE FUNCTION womp2() RETURNS trigger AS $$
         BEGIN
-                RETURN 'WOMP2';
+                RETURN NEW;
         END;
 $$ LANGUAGE plpgsql;
 
