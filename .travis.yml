@@ -12,11 +12,5 @@ rvm:
 
 services: postgresql
 
-addons:
-  postgresql: 9.3
-  postgresql: 9.2
-  postgresql: 9.3
-  postgresql: 9.4
-
 before_script:
   - psql -c 'create database pg_asset_reader_test;' -U postgres
