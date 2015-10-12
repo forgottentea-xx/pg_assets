@@ -12,5 +12,12 @@ rvm:
 
 services: postgresql
 
+env:
+  - PGVERSION=9.1
+  - PGVERSION=9.2
+  - PGVERSION=9.3 
+  - PGVERSION=9.4
+
+
 before_script:
   - psql -c 'create database pg_asset_reader_test;' -U postgres
