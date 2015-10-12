@@ -62,7 +62,6 @@ end
 
 You may also want to re-define the view if, for instance, you drop a column
 
-
 ```ruby
 class BringThePain < ActiveRecord::Migration
  include PGAssets::ViewsMigrationHelper
@@ -78,7 +77,14 @@ end
 ```
 
 ## WHAT IT DO
+Postgresql provides a lot of information about its assets through the `pg_catalog` schema.  There are views for each type of asset, and functions to get more information about some assets.  This gem is just a wrapper around that stuff to manipulate it and maintain the `assets.sql` file.  Also there is some special sauce. 
 
 ## FUTURE PLANS
+- [ ] Allow for some configuration options through initializers
+- [ ] Support materialized views
+- [ ] Support `types`, `enums`, and other types of assets
+- [ ] Refactor models to use more joins and fewer queries
+- [ ] Allow users to specify a dependency map.  Some dependencies can be read from the pg_catalog
+- [ ] Port to `sequel` ORM
 
 This project rocks and uses MIT-LICENSE.
