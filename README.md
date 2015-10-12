@@ -2,6 +2,8 @@
 
 This is a way to manage your postgresql assets.  It creates an assets.sql file which contains all of your views, triggers, and functions.  This file is managed alongside your `schema.rb` file.
 
+[![Build Status](https://travis-ci.org/forgottentea/pg_assets.svg?branch=master)](https://travis-ci.org/forgottentea/pg_assets)
+
 ## BUT WHY
 There are three reasons.
 
