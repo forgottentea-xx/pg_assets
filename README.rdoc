@@ -1,3 +1,84 @@
 = PgAssets
 
+This is a way to manage your postgresql assets.  It creates an assets.sql file which contains all of your views, triggers, and functions.  This file is managed alongside your `schema.rb` file.
+
+## BUT WHY
+There are three reasons.
+
+### `structure.sql` is a pain
+Sure you can use `structure.sql` and deal with the weird whitespace issues the pg_dump creates.  But this cooler.  
+
+### Tracking changes becomes easy
+With a discrete `assets.sql` file, you can see changes to your assets through time, without trudging through migrations to piece together a partial history at best.
+
+### Some assets are special
+Have you ever had trouble managing a table that is used in a view?  Well now you can use the `touching_view` helper!
+
+## HOW DO I USE IT
+Its pretty painless.  
+0. Make sure your rails project uses postgresql
+1. Add the gem to your Gemfile
+2. `rake schema:dump`
+3. check in your new file, `db/assets.sql`.
+
+### Migrations
+You can add assets using SQL statements, like so:
+```ruby
+class AddDatView < ActiveRecord::Migration
+
+  def up
+    sql = <<-SQL
+      CREATE OR REPLACE VIEW public.dat_view AS
+        SELECT 1;
+    SQL
+
+    execute sql
+  end
+
+  def down
+    sql = <<-SQL
+      DROP VIEW public.dat_view;
+    SQL
+
+    execute sql
+  end
+end
+```
+Once you run your migration, you will see changes to your `assets.sql` file.
+
+### Migrations that effect views
+Sometimes, postgresql won't let you make changes to a table because a view depends on it.  `pg_assets` has a helper for that. `PGAssets::ViewsMigrationHelper` provides the `touching_view` method.  You pass a symbol which is the name of the effected view, like this:
+```ruby
+class BringThePain < ActiveRecord::Migration
+ include PGAssets::ViewsMigrationHelper
+
+ def change
+   touching_view :a_view do
+     change_column :sweet_table, :column_1, :text, :null => false
+   end
+ end
+end
+```
+
+You may also want to re-define the view if, for instance, you drop a column
+
+
+```ruby
+class BringThePain < ActiveRecord::Migration
+ include PGAssets::ViewsMigrationHelper
+
+ def change
+   new_defn = 'SELECT id, column_1, column_3 FROM sweet_table'
+
+   touching_view :a_view, new_defn do
+     remove_column :sweet_table, :column_2
+   end
+ end
+end
+```
+
+## WHAT IT DO
+
+## FUTURE PLANS
+
 This project rocks and uses MIT-LICENSE.
