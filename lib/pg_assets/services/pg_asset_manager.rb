@@ -26,6 +26,10 @@ module PGAssets
         PGFunction.ours.to_a.sort_by { |f| f.identity }
       end
 
+      def self.constraints
+        PGConstraint.ours.to_a.sort_by { |f| f.identity }
+      end
+
       def self.assets_dump
         newline = "\n"
         assets = ''
@@ -72,6 +76,15 @@ module PGAssets
           assets << t.sql_for_remove + ';' + newline
           assets << newline
           assets << t.sql_for_reinstall + ';' + newline
+        end
+
+        constraints.each do |c|
+          assets << newline
+          assets << newline
+          assets << '-----------------------------------------------------------------------' + newline
+          assets << '---------- CONSTRAINT: ' + c.identity + newline
+          assets << '-----------------------------------------------------------------------' + newline
+          assets << c.sql_for_reinstall + ';' + newline
         end
 
         assets
