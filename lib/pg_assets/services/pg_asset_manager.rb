@@ -10,6 +10,14 @@ module PGAssets
         PGView.ours.by_name(name).first
       end
 
+      def self.matviews
+        PGMatView.ours.to_a.sort_by { |v| v.identity }
+      end
+
+      def self.specific_matview(name)
+        PGMatView.ours.by_name(name).first
+      end
+
       def self.triggers
         PGTrigger.ours.to_a.sort_by { |t| t.identity }
       end
@@ -35,6 +43,15 @@ module PGAssets
           assets << '---------- VIEW: ' + v.identity + newline
           assets << '-----------------------------------------------------------------------' + newline
           assets << v.sql_for_reinstall
+        end
+
+        matviews.each do |mv|
+          assets << newline
+          assets << newline
+          assets << '-----------------------------------------------------------------------' + newline
+          assets << '---------- MATERIALIZED VIEW: ' + mv.identity + newline
+          assets << '-----------------------------------------------------------------------' + newline
+          assets << mv.sql_for_reinstall
         end
 
         functions.each do |f|

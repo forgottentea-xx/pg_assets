@@ -42,5 +42,18 @@ module PGAssets
         view.reinstall(defn=new_defn)
       end
     end
+
+    def touching_materialized_view(view_name, new_defn=nil, &proc)
+      matview = ::PGAssets::Services::PGAssetManager.specific_matview(view_name.to_sym)
+      matview.remove
+
+      proc.call
+
+      if new_defn.nil?
+        matview.reinstall
+      else
+        matview.reinstall(defn=new_defn)
+      end
+    end
   end
 end

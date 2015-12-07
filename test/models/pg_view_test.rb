@@ -7,6 +7,12 @@ describe PGAssets::PGView do
       load_asset :view1
       PGAssets::PGView.ours.count.must_equal 1
     end
+
+    it "doesn't include materialized views" do
+      load_asset :matview1
+      load_asset :view1
+      PGAssets::PGView.ours.count.must_equal 1
+    end
   end
 
   describe "remove" do

@@ -1,23 +1,29 @@
 module PGAssets
-
   class PGMatView < ActiveRecord::Base
-    def self.readonly?
-      true
+    include LoadableAsset
+
+    self.table_name = 'pg_catalog.pg_matviews'
+
+    after_find do
+      self.cached_defn = definition
     end
 
-    # W T F
-    def self.all_names
-      matviews = []
-      result = connection.execute <<-SQL
-        SELECT pg_class.oid::regclass::text, pg_namespace.nspname, oid
-        FROM   pg_class
-        JOIN   pg_catalog.pg_namespace
-          ON   (pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace)
-        WHERE  relkind = 'm'
-      SQL
+    scope :ours, -> { where.not(schemaname: ['pg_catalog', 'information_schema']) }
 
-      result.each { |row| matviews << row['nspname'] + '.' + row['oid'] }
-      matviews
+    def self.by_name(name)
+      where(matviewname: name.to_s)
+    end
+
+    def identity
+      schemaname + '.' + matviewname
+    end
+
+    def sql_for_remove
+      sql = "DROP MATERIALIZED VIEW IF EXISTS #{schemaname}.#{matviewname}"
+    end
+
+    def sql_for_reinstall(defn=cached_defn)
+      sql = "CREATE MATERIALIZED VIEW #{schemaname}.#{matviewname} AS #{defn}"
     end
   end
 end
