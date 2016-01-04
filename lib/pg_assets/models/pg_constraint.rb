@@ -23,7 +23,7 @@ module PGAssets
     end
 
     def sql_for_reinstall
-      sql = "ALTER TABLE #{get_table_name} ADD CONSTRAINT #{conname} #{cached_defn}"
+      sql = "#{sql_for_remove}; ALTER TABLE #{get_table_name} ADD CONSTRAINT #{conname} #{cached_defn}"
     end
 
     private

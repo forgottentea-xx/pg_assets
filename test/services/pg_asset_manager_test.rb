@@ -113,5 +113,29 @@ describe PGAssets::Services::PGAssetManager do
       PGAssets::Services::PGAssetManager.triggers.size.must_equal 2
       PGAssets::Services::PGAssetManager.constraints.size.must_equal 3
     end
+
+    it "does not load assets twice if the rake task is run twice" do
+      PGAssets::Services::PGAssetManager.views.size.must_equal 0
+      PGAssets::Services::PGAssetManager.matviews.size.must_equal 0
+      PGAssets::Services::PGAssetManager.functions.size.must_equal 0
+      PGAssets::Services::PGAssetManager.triggers.size.must_equal 0
+      PGAssets::Services::PGAssetManager.constraints.size.must_equal 0
+
+      PGAssets::Services::PGAssetManager.assets_load @assets
+
+      PGAssets::Services::PGAssetManager.views.size.must_equal 2
+      PGAssets::Services::PGAssetManager.matviews.size.must_equal 2
+      PGAssets::Services::PGAssetManager.functions.size.must_equal 4
+      PGAssets::Services::PGAssetManager.triggers.size.must_equal 2
+      PGAssets::Services::PGAssetManager.constraints.size.must_equal 3
+
+      PGAssets::Services::PGAssetManager.assets_load @assets
+
+      PGAssets::Services::PGAssetManager.views.size.must_equal 2
+      PGAssets::Services::PGAssetManager.matviews.size.must_equal 2
+      PGAssets::Services::PGAssetManager.functions.size.must_equal 4
+      PGAssets::Services::PGAssetManager.triggers.size.must_equal 2
+      PGAssets::Services::PGAssetManager.constraints.size.must_equal 3
+    end
   end
 end
