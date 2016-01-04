@@ -136,6 +136,8 @@ describe PGAssets::Services::PGAssetManager do
       PGAssets::Services::PGAssetManager.functions.size.must_equal 4
       PGAssets::Services::PGAssetManager.triggers.size.must_equal 2
       PGAssets::Services::PGAssetManager.constraints.size.must_equal 3
+
+      PGAssets::Services::PGAssetManager.assets_dump.must_equal @assets
     end
   end
 end
