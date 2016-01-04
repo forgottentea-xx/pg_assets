@@ -23,7 +23,7 @@ module PGAssets
     end
 
     def sql_for_reinstall(defn=cached_defn)
-      sql = "CREATE MATERIALIZED VIEW #{schemaname}.#{matviewname} AS #{defn}"
+      sql = "#{sql_for_remove}; CREATE MATERIALIZED VIEW #{schemaname}.#{matviewname} AS #{defn}"
     end
   end
 end

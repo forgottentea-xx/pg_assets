@@ -1,4 +1,4 @@
-CREATE TABLE table_for_view (
+CREATE TABLE IF NOT EXISTS table_for_view (
   test integer,
   test2 text
 );
