@@ -83,14 +83,14 @@ end
 
 ## Configuration
 
-By default, all supported kinds of assets will be managed.  To opt out
-of managing some kinds, configure pg\_assets like this:
+By default all supported kinds of assets will be managed.  To opt out
+of managing some kinds configure pg\_assets like this:
 
 ```ruby
 PgAssets.config.manage_constraints = false
 ```
 
-This code can be put in an initializer in a rails project.
+For a rails project put this code in an initializer.
 
 ## WHAT IT DO
 Postgresql provides a lot of information about its assets through the `pg_catalog` schema.  There are views for each type of asset, and functions to get more information about some assets.  This gem is just a wrapper around that stuff to manipulate it and maintain the `assets.sql` file.  Also there is some special sauce.
