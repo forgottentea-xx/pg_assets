@@ -52,10 +52,10 @@ Once you run your migration, you will see changes to your `assets.sql` file.
 ### Migrations that effect views
 Most migrations that effect a view (by modifying a table) will just result in an updated view.  Postgresql handles this for you and me, and after your migration runs, you will see changes to `assets.sql`
 
-Sometimes, postgresql won't let you make changes to a table because a view depends on it.  `pg_assets` has a helper for that. `PGAssets::ViewsMigrationHelper` provides the `touching_view` method.  You pass a symbol which is the name of the effected view, like this:
+Sometimes, postgresql won't let you make changes to a table because a view depends on it.  `pg_assets` has a helper for that. `PgAssets::ViewsMigrationHelper` provides the `touching_view` method.  You pass a symbol which is the name of the effected view, like this:
 ```ruby
 class BringThePain < ActiveRecord::Migration
- include PGAssets::ViewsMigrationHelper
+ include PgAssets::ViewsMigrationHelper
 
  def change
    touching_view :a_view do
@@ -69,7 +69,7 @@ You may also want to re-define the view if, for instance, you drop a column
 
 ```ruby
 class BringThePain < ActiveRecord::Migration
- include PGAssets::ViewsMigrationHelper
+ include PgAssets::ViewsMigrationHelper
 
  def change
    new_defn = 'SELECT id, column_1, column_3 FROM sweet_table'

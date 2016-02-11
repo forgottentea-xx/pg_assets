@@ -12,4 +12,14 @@ require_relative 'pg_assets/version'
 
 module PgAssets
   require 'pg_assets/railtie' if defined?(Rails)
+
+  Config = Struct.new :manage_constraints,
+                      :manage_functions,
+                      :manage_matviews,
+                      :manage_triggers,
+                      :manage_views
+
+  def self.config
+    @config ||= Config.new true, true, true, true, true
+  end
 end
