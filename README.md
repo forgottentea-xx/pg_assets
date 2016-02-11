@@ -1,4 +1,4 @@
-= PgAssets
+# PgAssets
 
 This is a way to manage your postgresql assets.  It creates an assets.sql file which contains all of your views, triggers, and functions.  This file is managed alongside your `schema.rb` file.
 
@@ -8,7 +8,7 @@ This is a way to manage your postgresql assets.  It creates an assets.sql file w
 There are three reasons.
 
 ### `structure.sql` is a pain
-Sure you can use `structure.sql` and deal with the weird whitespace issues the pg_dump creates.  But this cooler.  
+Sure you can use `structure.sql` and deal with the weird whitespace issues the pg_dump creates.  But this cooler.
 
 ### Tracking changes becomes easy
 With a discrete `assets.sql` file, you can see changes to your assets through time, without trudging through migrations to piece together a partial history at best.
@@ -17,7 +17,7 @@ With a discrete `assets.sql` file, you can see changes to your assets through ti
 Have you ever had trouble managing a table that is used in a view?  Well now you can use the `touching_view` helper!
 
 ## HOW DO I USE IT
-Its pretty painless.  
+Its pretty painless.
 
 0. Make sure your rails project uses postgresql
 1. Add the gem to your Gemfile
@@ -80,6 +80,17 @@ class BringThePain < ActiveRecord::Migration
  end
 end
 ```
+
+## Configuration
+
+By default, all supported kinds of assets will be managed.  To opt out
+of managing some kinds, configure pg\_assets like this:
+
+```ruby
+PgAssets.config.manage_constraints = false
+```
+
+This code can be put in an initializer in a rails project.
 
 ## WHAT IT DO
 Postgresql provides a lot of information about its assets through the `pg_catalog` schema.  There are views for each type of asset, and functions to get more information about some assets.  This gem is just a wrapper around that stuff to manipulate it and maintain the `assets.sql` file.  Also there is some special sauce.
