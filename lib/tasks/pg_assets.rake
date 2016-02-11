@@ -34,4 +34,11 @@ namespace :db do
       Rake::Task['pg:assets:dump'].invoke
     end
   end
+
+  namespace :test do
+    task :load do
+      # Run this after the regular db:schema:load stuff
+      Rake::Task['pg:assets:load'].invoke
+    end
+  end
 end
