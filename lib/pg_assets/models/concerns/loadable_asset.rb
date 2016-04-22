@@ -1,4 +1,4 @@
-module PGAssets
+module PgAssets
   module LoadableAsset
     extend ActiveSupport::Concern
 
