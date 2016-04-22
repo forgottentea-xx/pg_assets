@@ -1,5 +1,5 @@
 module PgAssets
-  class PGView < ActiveRecord::Base
+  class PgView < ActiveRecord::Base
     include LoadableAsset
 
     self.table_name = 'pg_catalog.pg_views'
@@ -19,11 +19,11 @@ module PgAssets
     end
 
     def sql_for_remove
-      sql = "DROP VIEW IF EXISTS #{schemaname}.#{viewname}"
+      "DROP VIEW IF EXISTS #{schemaname}.#{viewname}"
     end
 
     def sql_for_reinstall(defn=cached_defn)
-      sql = "CREATE OR REPLACE VIEW #{schemaname}.#{viewname} AS #{defn}"
+      "CREATE OR REPLACE VIEW #{schemaname}.#{viewname} AS #{defn}"
     end
   end
 end

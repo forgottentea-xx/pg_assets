@@ -1,5 +1,5 @@
 module PgAssets
-  class PGMatView < ActiveRecord::Base
+  class PgMatView < ActiveRecord::Base
     include LoadableAsset
 
     self.table_name = 'pg_catalog.pg_matviews'
@@ -19,11 +19,11 @@ module PgAssets
     end
 
     def sql_for_remove
-      sql = "DROP MATERIALIZED VIEW IF EXISTS #{schemaname}.#{matviewname}"
+      "DROP MATERIALIZED VIEW IF EXISTS #{schemaname}.#{matviewname}"
     end
 
     def sql_for_reinstall(defn=cached_defn)
-      sql = "#{sql_for_remove}; CREATE MATERIALIZED VIEW #{schemaname}.#{matviewname} AS #{defn}"
+      "#{sql_for_remove};\n\nCREATE MATERIALIZED VIEW #{schemaname}.#{matviewname} AS #{defn}"
     end
   end
 end

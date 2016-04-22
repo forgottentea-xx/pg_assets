@@ -9,32 +9,32 @@ describe PgAssets::ViewsMigrationHelper do
 
   describe '.touching_view with unchanged table' do
     it "removes and reinstalls the view" do
-      PgAssets::PGView.ours.count.must_equal 1
+      PgAssets::PgView.ours.count.must_equal 1
 
       touching_view :view1 do
-        PgAssets::PGView.ours.count.must_equal 0
+        PgAssets::PgView.ours.count.must_equal 0
       end
 
-      PgAssets::PGView.ours.count.must_equal 1
+      PgAssets::PgView.ours.count.must_equal 1
     end
 
     # this is really a postgresql function.. not sure where else to test it though
     it "propogates table changes to the view" do
       load_asset :view_with_table
-      asset_sql_before = PgAssets::Services::PGAssetManager.assets_dump
+      asset_sql_before = PgAssets::Services::PgAssetManager.assets_dump
 
       ActiveRecord::Base.connection.execute <<-SQL
         ALTER TABLE table_for_view RENAME COLUMN test2 TO bomboclaat;
       SQL
 
-      asset_sql_after = PgAssets::Services::PGAssetManager.assets_dump
+      asset_sql_after = PgAssets::Services::PgAssetManager.assets_dump
 
-      asset_sql_before.wont_match /bomboclaat/
-      asset_sql_after.must_match /bomboclaat/
+      asset_sql_before.wont_match(/bomboclaat/)
+      asset_sql_after.must_match(/bomboclaat/)
     end
 
     it "allows for changing a view" do
-      asset_sql_before = PgAssets::Services::PGAssetManager.assets_dump
+      asset_sql_before = PgAssets::Services::PgAssetManager.assets_dump
 
       new_view = <<-SQL
         CREATE OR REPLACE VIEW view1 AS
@@ -42,44 +42,44 @@ describe PgAssets::ViewsMigrationHelper do
       SQL
 
       touching_view :view1, new_view do
-        wat = 'wat'
+        'wat'
       end
 
-      asset_sql_after = PgAssets::Services::PGAssetManager.assets_dump
+      asset_sql_after = PgAssets::Services::PgAssetManager.assets_dump
 
-      asset_sql_before.wont_match /rasclaat/
-      asset_sql_after.must_match /rasclaat/
+      asset_sql_before.wont_match(/rasclaat/)
+      asset_sql_after.must_match(/rasclaat/)
     end
   end
 
   describe '.touching_materialized_view with unchanged table' do
     it "removes and reinstalls the materialized view" do
-      PgAssets::PGView.ours.count.must_equal 1
+      PgAssets::PgView.ours.count.must_equal 1
 
       touching_materialized_view :matview1 do
-        PgAssets::PGMatView.ours.count.must_equal 0
+        PgAssets::PgMatView.ours.count.must_equal 0
       end
 
-      PgAssets::PGMatView.ours.count.must_equal 1
+      PgAssets::PgMatView.ours.count.must_equal 1
     end
 
     # this is really a postgresql function.. not sure where else to test it though
     it "propogates table changes to the materilialized view" do
       load_asset :materialized_view_with_table
-      asset_sql_before = PgAssets::Services::PGAssetManager.assets_dump
+      asset_sql_before = PgAssets::Services::PgAssetManager.assets_dump
 
       ActiveRecord::Base.connection.execute <<-SQL
         ALTER TABLE table_for_view RENAME COLUMN test2 TO bomboclaat;
       SQL
 
-      asset_sql_after = PgAssets::Services::PGAssetManager.assets_dump
+      asset_sql_after = PgAssets::Services::PgAssetManager.assets_dump
 
-      asset_sql_before.wont_match /bomboclaat/
-      asset_sql_after.must_match /bomboclaat/
+      asset_sql_before.wont_match(/bomboclaat/)
+      asset_sql_after.must_match(/bomboclaat/)
     end
 
     it "allows for changing a view" do
-      asset_sql_before = PgAssets::Services::PGAssetManager.assets_dump
+      asset_sql_before = PgAssets::Services::PgAssetManager.assets_dump
 
       new_view = <<-SQL
         CREATE MATERIALIZED VIEW matview1 AS
@@ -87,13 +87,13 @@ describe PgAssets::ViewsMigrationHelper do
       SQL
 
       touching_materialized_view :matview1, new_view do
-        wat = 'wat'
+        'wat'
       end
 
-      asset_sql_after = PgAssets::Services::PGAssetManager.assets_dump
+      asset_sql_after = PgAssets::Services::PgAssetManager.assets_dump
 
-      asset_sql_before.wont_match /rasclaat/
-      asset_sql_after.must_match /rasclaat/
+      asset_sql_before.wont_match(/rasclaat/)
+      asset_sql_after.must_match(/rasclaat/)
     end
   end
 end

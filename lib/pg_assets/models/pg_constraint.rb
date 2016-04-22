@@ -1,5 +1,5 @@
 module PgAssets
-  class PGConstraint < ActiveRecord::Base
+  class PgConstraint < ActiveRecord::Base
     include LoadableAsset
 
     self.table_name = 'pg_catalog.pg_constraint'
@@ -19,11 +19,11 @@ module PgAssets
     end
 
     def sql_for_remove
-      sql = "ALTER TABLE #{get_table_name} DROP CONSTRAINT IF EXISTS #{conname}"
+      "ALTER TABLE #{get_table_name} DROP CONSTRAINT IF EXISTS #{conname}"
     end
 
     def sql_for_reinstall
-      sql = "#{sql_for_remove}; ALTER TABLE #{get_table_name} ADD CONSTRAINT #{conname} #{cached_defn}"
+      "#{sql_for_remove}; ALTER TABLE #{get_table_name} ADD CONSTRAINT #{conname} #{cached_defn};"
     end
 
     private

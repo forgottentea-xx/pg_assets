@@ -1,5 +1,5 @@
 module PgAssets
-  class PGTrigger < ActiveRecord::Base
+  class PgTrigger < ActiveRecord::Base
     include LoadableAsset
 
     attr_accessor :trigger_table_name
@@ -19,11 +19,11 @@ module PgAssets
     end
 
     def sql_for_remove
-      sql = "DROP TRIGGER IF EXISTS #{tgname} ON #{get_trigger_table_name}"
+      "DROP TRIGGER IF EXISTS #{tgname} ON #{get_trigger_table_name}"
     end
 
     def sql_for_reinstall
-      sql = cached_defn
+      "#{sql_for_remove};\n\n#{cached_defn};"
     end
 
     private

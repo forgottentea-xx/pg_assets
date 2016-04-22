@@ -1,4 +1,3 @@
-require 'pg_assets'
 require 'rails'
 
 module PgAssets
