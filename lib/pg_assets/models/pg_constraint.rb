@@ -1,4 +1,4 @@
-module PGAssets
+module PgAssets
   class PGConstraint < ActiveRecord::Base
     include LoadableAsset
 

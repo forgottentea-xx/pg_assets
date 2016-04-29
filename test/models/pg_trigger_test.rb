@@ -1,11 +1,11 @@
 require 'test_helper'
 
-describe PGAssets::PGTrigger do
+describe PgAssets::PGTrigger do
   describe ".ours" do
     it "lists the functions" do
-      PGAssets::PGTrigger.ours.count.must_equal 0
+      PgAssets::PGTrigger.ours.count.must_equal 0
       load_asset :trigger1
-      PGAssets::PGTrigger.ours.count.must_equal 1
+      PgAssets::PGTrigger.ours.count.must_equal 1
     end
   end
 
@@ -13,12 +13,12 @@ describe PGAssets::PGTrigger do
     before do
       load_asset :trigger1
       load_asset :trigger2
-      @trigger = PGAssets::PGTrigger.ours.first
+      @trigger = PgAssets::PGTrigger.ours.first
     end
     it "removes the trigger" do
-      PGAssets::PGTrigger.ours.count.must_equal 2
+      PgAssets::PGTrigger.ours.count.must_equal 2
       @trigger.remove
-      PGAssets::PGTrigger.ours.pluck(:tgname).include?(@trigger.tgname).must_equal false
+      PgAssets::PGTrigger.ours.pluck(:tgname).include?(@trigger.tgname).must_equal false
     end
   end
 
@@ -26,13 +26,13 @@ describe PGAssets::PGTrigger do
     before do
       load_asset :trigger1
       load_asset :trigger2
-      @trigger = PGAssets::PGTrigger.ours.first
+      @trigger = PgAssets::PGTrigger.ours.first
       @trigger.remove
     end
     it "reinstalls the function" do
-      PGAssets::PGTrigger.ours.count.must_equal 1
+      PgAssets::PGTrigger.ours.count.must_equal 1
       @trigger.reinstall
-      PGAssets::PGTrigger.ours.pluck(:tgname).include?(@trigger.tgname).must_equal true
+      PgAssets::PGTrigger.ours.pluck(:tgname).include?(@trigger.tgname).must_equal true
     end
   end
 end

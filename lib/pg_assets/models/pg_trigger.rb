@@ -1,4 +1,4 @@
-module PGAssets
+module PgAssets
   class PGTrigger < ActiveRecord::Base
     include LoadableAsset
 

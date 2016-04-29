@@ -6,7 +6,7 @@
 #
 #
 #     class BringThePain < ActiveRecord::Migration
-#       include PGAssets::ViewsMigrationHelper
+#       include PgAssets::ViewsMigrationHelper
 #
 #       def change
 #         touching_view :a_view do
@@ -18,7 +18,7 @@
 # You may also want to re-define the view if, for instance, you drop a column
 #
 #     class BringThePain < ActiveRecord::Migration
-#       include PGAssets::ViewsMigrationHelper
+#       include PgAssets::ViewsMigrationHelper
 #
 #       def change
 #         new_defn = 'SELECT id, column_1, column_3 FROM sweet_table'
@@ -28,10 +28,10 @@
 #         end
 #       end
 #     end
-module PGAssets
+module PgAssets
   module ViewsMigrationHelper
     def touching_view(view_name, new_defn=nil, &proc)
-      view = ::PGAssets::Services::PGAssetManager.specific_view(view_name.to_sym)
+      view = ::PgAssets::Services::PGAssetManager.specific_view(view_name.to_sym)
       view.remove
 
       proc.call
@@ -44,7 +44,7 @@ module PGAssets
     end
 
     def touching_materialized_view(view_name, new_defn=nil, &proc)
-      matview = ::PGAssets::Services::PGAssetManager.specific_matview(view_name.to_sym)
+      matview = ::PgAssets::Services::PGAssetManager.specific_matview(view_name.to_sym)
       matview.remove
 
       proc.call

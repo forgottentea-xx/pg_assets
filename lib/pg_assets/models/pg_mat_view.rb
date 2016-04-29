@@ -1,4 +1,4 @@
-module PGAssets
+module PgAssets
   class PGMatView < ActiveRecord::Base
     include LoadableAsset
 
