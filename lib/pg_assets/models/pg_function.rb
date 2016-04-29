@@ -1,5 +1,5 @@
 module PgAssets
-  class PGFunction < ActiveRecord::Base
+  class PgFunction < ActiveRecord::Base
     include LoadableAsset
 
     self.table_name = 'pg_catalog.pg_proc'
@@ -19,11 +19,11 @@ module PgAssets
 
     # TODO get this to work with bomboclaat schemas
     def sql_for_remove
-      sql = "DROP FUNCTION IF EXISTS #{proname}(#{get_function_args})"
+      "DROP FUNCTION IF EXISTS #{proname}(#{get_function_args})"
     end
 
     def sql_for_reinstall
-      cached_defn
+      "#{cached_defn};\n"
     end
 
     private

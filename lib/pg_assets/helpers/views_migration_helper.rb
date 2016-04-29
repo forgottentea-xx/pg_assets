@@ -31,7 +31,7 @@
 module PgAssets
   module ViewsMigrationHelper
     def touching_view(view_name, new_defn=nil, &proc)
-      view = ::PgAssets::Services::PGAssetManager.specific_view(view_name.to_sym)
+      view = ::PgAssets::PgView.ours.by_name(view_name.to_sym).first
       view.remove
 
       proc.call
@@ -39,12 +39,12 @@ module PgAssets
       if new_defn.nil?
         view.reinstall
       else
-        view.reinstall(defn=new_defn)
+        view.reinstall(new_defn)
       end
     end
 
     def touching_materialized_view(view_name, new_defn=nil, &proc)
-      matview = ::PgAssets::Services::PGAssetManager.specific_matview(view_name.to_sym)
+      matview = ::PgAssets::PgMatView.ours.by_name(view_name.to_sym).first
       matview.remove
 
       proc.call
@@ -52,7 +52,7 @@ module PgAssets
       if new_defn.nil?
         matview.reinstall
       else
-        matview.reinstall(defn=new_defn)
+        matview.reinstall(new_defn)
       end
     end
   end

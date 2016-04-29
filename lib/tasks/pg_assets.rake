@@ -7,7 +7,7 @@ namespace :pg do
       start_time = Time.now
 
       File.open(file_location, 'r') do |f|
-        PgAssets::Services::PGAssetManager.assets_load(f.read)
+        PgAssets::Services::PgAssetManager.assets_load(f.read)
       end
 
       puts "Installed assets into the database in #{(Time.now - start_time) * 1000 } milliseconds"
@@ -16,7 +16,7 @@ namespace :pg do
     desc 'Dump db assets (triggers, functions, views)'
     task :dump => :environment do
       File.open(file_location, 'w') do |file|
-        file.puts PgAssets::Services::PGAssetManager.assets_dump
+        file.puts PgAssets::Services::PgAssetManager.assets_dump
       end
     end
   end
